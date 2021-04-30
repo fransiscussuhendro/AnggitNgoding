@@ -1,0 +1,327 @@
+﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="SuspendOperation"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:sd1="clr-namespace:System.Diagnostics;assembly=System"
+ xmlns:si="clr-namespace:System.IO;assembly=mscorlib"
+ xmlns:sl="clr-namespace:System.Linq;assembly=System.Core"
+ xmlns:sma="clr-namespace:System.Management.Automation;assembly=System.Management.Automation"
+ xmlns:snm="clr-namespace:System.Net.Mail;assembly=System"
+ xmlns:sx="clr-namespace:System.Xml;assembly=System.Xml"
+ xmlns:sxl="clr-namespace:System.Xml.Linq;assembly=System.Xml.Linq"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:ul="clr-namespace:UiPath.Library;assembly=UiPath.Library"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="In_dtFilteredBankReport" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>SuspendOperation_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.Core</AssemblyReference>
+      <AssemblyReference>UiPath.Core.Activities</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="This workflow Performs the suspend operations for each row item. Checks description column in each row has 2 &quot;|&quot;delimiters and policy number is present in it (2nd element)&#xA;Input- Bank statement report row item" DisplayName="SuspendOperation" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="sd:DataTable" Name="dtFilteredBankReport" />
+      <Variable x:TypeArguments="x:Int32" Name="OperationType" />
+      <Variable x:TypeArguments="x:String" Name="OperationStatus" />
+    </Sequence.Variables>
+    <Assign DisplayName="Assign-dtFilteredBankReport" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="sd:DataTable">[dtFilteredBankReport]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="sd:DataTable">[In_dtFilteredBankReport]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:ForEachRow DataTable="[dtFilteredBankReport]" DisplayName="For each row-dtFilteredBankReport" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+      <ui:ForEachRow.Body>
+        <ActivityAction x:TypeArguments="sd:DataRow">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="sd:DataRow" Name="eachRow" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Body- dtFilteredBankReport" sap2010:WorkflowViewState.IdRef="Sequence_5">
+            <If Condition="[(eachRow(&quot;Description&quot;).ToString.Split(&quot;|&quot;c).Length-1) = 2]" DisplayName="If- Seperators are present in the description column" sap2010:WorkflowViewState.IdRef="If_2">
+              <If.Then>
+                <Sequence DisplayName="Sequence-seperators present" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                  <If Condition="[eachRow(&quot;Description&quot;).ToString.Split(&quot;|&quot;c).ElementAt(1).Trim &lt;&gt; &quot;&quot;]" DisplayName="If- Policy number is present in the Description column of the bank statement report file" sap2010:WorkflowViewState.IdRef="If_1">
+                    <If.Then>
+                      <Assign sap2010:Annotation.AnnotationText="OperationType = 1 means Policy Number is available" sap2010:WorkflowViewState.IdRef="Assign_2">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:Int32">[OperationType]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:Int32">1</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                    </If.Then>
+                    <If.Else>
+                      <Assign sap2010:Annotation.AnnotationText="OperationType = 2&#xD;&#xA;means Data is in correct format but Policy Number is not available" sap2010:WorkflowViewState.IdRef="Assign_3">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:Int32">[OperationType]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:Int32">2</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                    </If.Else>
+                  </If>
+                </Sequence>
+              </If.Then>
+              <If.Else>
+                <Assign sap2010:Annotation.AnnotationText="OperationType = 3&#xD;&#xA;means Policy Number is not available" sap2010:WorkflowViewState.IdRef="Assign_4">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Int32">[OperationType]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Int32">3</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </If.Else>
+            </If>
+            <Sequence DisplayName="Sequence-Policy number present" sap2010:WorkflowViewState.IdRef="Sequence_20">
+              <TryCatch DisplayName="Try catch-Core Suspend Operations" sap2010:WorkflowViewState.IdRef="TryCatch_3">
+                <TryCatch.Try>
+                  <Sequence DisplayName="Sequence-Core Suspend Operations" sap2010:WorkflowViewState.IdRef="Sequence_17">
+                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file-CoreSuspendOperation" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Project\CoreSuspendOperation.xaml">
+                      <ui:InvokeWorkflowFile.Arguments>
+                        <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="Config">[Config]</InArgument>
+                        <InArgument x:TypeArguments="sd:DataRow" x:Key="In_drItem">[eachRow]</InArgument>
+                        <InArgument x:TypeArguments="x:Int32" x:Key="In_OperationType">[OperationType]</InArgument>
+                        <OutArgument x:TypeArguments="x:String" x:Key="Out_OperationStatus">[OperationStatus]</OutArgument>
+                      </ui:InvokeWorkflowFile.Arguments>
+                    </ui:InvokeWorkflowFile>
+                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file-UpdateStatusForRowItem-Successful" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="True" WorkflowFileName="Project\UpdateStatusForRowItem.xaml">
+                      <ui:InvokeWorkflowFile.Arguments>
+                        <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="Config">[Config]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="In_strRefNoForRowItem">[eachRow("Ref No").ToString.Trim]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="In_strStatusForRowItem">[OperationStatus]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="In_strCreditForRowItem">[eachRow("Credit").ToString.Trim]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="In_strTransactionRowItem">[eachRow("Transaction ").ToString.Trim]</InArgument>
+                      </ui:InvokeWorkflowFile.Arguments>
+                    </ui:InvokeWorkflowFile>
+                  </Sequence>
+                </TryCatch.Try>
+                <TryCatch.Catches>
+                  <Catch x:TypeArguments="ui:BusinessRuleException" sap2010:WorkflowViewState.IdRef="Catch`1_5">
+                    <ActivityAction x:TypeArguments="ui:BusinessRuleException">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="ui:BusinessRuleException" Name="exception" />
+                      </ActivityAction.Argument>
+                      <Sequence sap2010:WorkflowViewState.IdRef="Sequence_18">
+                        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file-UpdateStatusForRowItem-Manually" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_13" UnSafe="True" WorkflowFileName="Project\UpdateStatusForRowItem.xaml">
+                          <ui:InvokeWorkflowFile.Arguments>
+                            <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="Config">[Config]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="In_strRefNoForRowItem">[eachRow("Ref No").ToString.Trim]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="In_strStatusForRowItem">Manually - Data Not Saved</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="In_strCreditForRowItem">[eachRow("Credit").ToString.Trim]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="In_strTransactionRowItem">[eachRow("Transaction ").ToString.Trim]</InArgument>
+                          </ui:InvokeWorkflowFile.Arguments>
+                        </ui:InvokeWorkflowFile>
+                        <ui:CloseWindow UseWindow="{x:Null}" ContinueOnError="True" DisplayName="Close window 'Account form'" sap2010:WorkflowViewState.IdRef="CloseWindow_15" InformativeScreenshot="7dbd20293d16ba70ab47ba8ebeba8cea" Selector="&lt;html title='VouTRFrm | Inter - Office Receipt Voucher' /&gt;" TimeoutMS="2000" WaitForReady="INTERACTIVE" />
+                      </Sequence>
+                    </ActivityAction>
+                  </Catch>
+                  <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_6">
+                    <ActivityAction x:TypeArguments="s:Exception">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                      </ActivityAction.Argument>
+                      <Sequence DisplayName="Sequence-Catch Exception" sap2010:WorkflowViewState.IdRef="Sequence_19">
+                        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file-UpdateStatusForRowItem-Manually" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="True" WorkflowFileName="Project\UpdateStatusForRowItem.xaml">
+                          <ui:InvokeWorkflowFile.Arguments>
+                            <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="Config">[Config]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="In_strRefNoForRowItem">[eachRow("Ref No").ToString.Trim]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="In_strStatusForRowItem">Manually</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="In_strCreditForRowItem">[eachRow("Credit").ToString.Trim]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="In_strTransactionRowItem">[eachRow("Transaction ").ToString.Trim]</InArgument>
+                          </ui:InvokeWorkflowFile.Arguments>
+                        </ui:InvokeWorkflowFile>
+                        <ui:CloseWindow UseWindow="{x:Null}" ContinueOnError="True" DisplayName="Close window 'Document window '" sap2010:WorkflowViewState.IdRef="CloseWindow_16" InformativeScreenshot="a043efc101246aa26a36362377a32240" Selector="[&quot;&lt;wnd app='iexplore.exe' cls='IEFrame' idx='1' title='&quot;+Config(&quot;Login Care UAT&quot;).ToString.Trim+&quot;CGISSWebReport/Finance/Web*' /&gt;&quot;]" TimeoutMS="2000" WaitForReady="COMPLETE" />
+                        <Delay DisplayName="Delay 1 second" Duration="00:00:01" sap2010:WorkflowViewState.IdRef="Delay_7" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                        <ui:CloseWindow UseWindow="{x:Null}" ContinueOnError="True" DisplayName="Close window 'iexplore.exe'" sap2010:WorkflowViewState.IdRef="CloseWindow_17" InformativeScreenshot="c0002ff1c49115e1f6c1a488402bc4a4" Selector="[&quot;&lt;wnd app='iexplore.exe' cls='IEFrame' title='&quot;+Config(&quot;Login Care UAT&quot;).ToString.Trim+&quot;CGISSWebReport/Finance/Web*' /&gt;&quot;]" TimeoutMS="2000" WaitForReady="INTERACTIVE" />
+                        <Delay DisplayName="Delay 1 second" Duration="00:00:01" sap2010:WorkflowViewState.IdRef="Delay_8" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                        <ui:CloseWindow UseWindow="{x:Null}" ContinueOnError="True" DisplayName="Close window 'Finance and accounting'" sap2010:WorkflowViewState.IdRef="CloseWindow_18" InformativeScreenshot="b787817054e20a9e96bcf93ddba93976" Selector="&lt;html title='VPrintDlg | Print Document' /&gt;" TimeoutMS="2000" WaitForReady="INTERACTIVE" />
+                        <Delay DisplayName="Delay 1 second" Duration="00:00:01" sap2010:WorkflowViewState.IdRef="Delay_9" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                        <ui:CloseWindow UseWindow="{x:Null}" ContinueOnError="True" DisplayName="Close window 'Account form'" sap2010:WorkflowViewState.IdRef="CloseWindow_19" InformativeScreenshot="7dbd20293d16ba70ab47ba8ebeba8cea" Selector="&lt;html title='VouTRFrm | Inter - Office Receipt Voucher' /&gt;" TimeoutMS="2000" WaitForReady="INTERACTIVE" />
+                      </Sequence>
+                    </ActivityAction>
+                  </Catch>
+                </TryCatch.Catches>
+              </TryCatch>
+            </Sequence>
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEachRow.Body>
+    </ui:ForEachRow>
+    <sads:DebugSymbol.Symbol>d1dDOlxVc2Vyc1x0YmF1c2VyMVxEb2N1bWVudHNcVWlQYXRoXDAyIFN1c3BlZCBWb3VjaGVyIChSVilcUHJvamVjdFxTdXNwZW5kT3BlcmF0aW9uLnhhbWxPUAPXAQ4CAQFWBV0OAgFbXgXVARUCAQJbNFtNAgFeWDVYSwIBXF4eXjYCAVlkC9IBFgIBA2UNigESAgFIiwEN0QEYAgEEZRtlbQIBSWcRfhwCAU6BARGIARoCAUqMAQ/QARoCAQVoE30YAgFPhgE7hgE8AgFNgwE8gwFLAgFLjgEToAEeAgE0qAEXswEiAgEnuwEXzAEiAgEGaCFojAECAVBqF3EgAgFVdBd7IAIBUY8BFZYBLQIBPpcBFZ8BLQIBNakBGbEBMQIBLLIBGbIB4wICASi8ARnEATECAR/FARnFAcoDAgEaxgEZxgHhAQIBGMcBGccBwQMCARPIARnIAeEBAgERyQEZyQHeAgIBDcoBGcoB4QECAQvLARnLAeMCAgEHb0FvQgIBWGxCbFECAVZ5QXlCAgFUdkJ2UQIBUpQBXZQBbgIBRpIBVJIBXQIBRJEBaZEBcQIBQo8B1wGPAfoBAgFBkwFYkwFnAgE/nAFfnAGAAQIBPZkBaZkBcQIBO5oBXpoBfwIBOp0BYZ0BiAECATmbAV+bAXACATeXAeMBlwGIAgIBNq4BY64BhAECATOrAW2rAXUCATGsAWKsAYMBAgEwrwFlrwGMAQIBL60BY60BfAIBLqkB5QGpAYoCAgEtsgHyAbIBtAICASuyAb8CsgHFAgIBKrIBTrIBVAIBKcEBY8EBhAECASa+AW2+AXUCASS/AWK/AYMBAgEjwgFlwgGMAQIBIsABY8ABawIBIbwB5QG8AYoCAgEgxQH2AcUBngMCAR3FAakDxQGvAwIBHMUBTsUBVAIBG8YBRsYBUAIBGccB8gHHAZIDAgEWxwGdA8cBowMCARXHAU7HAVQCARTIAUbIAVACARLJAfwByQGvAgIBEMkBugLJAcACAgEPyQFOyQFUAgEOygFGygFQAgEMywHyAcsBtAICAQrLAb8CywHFAgIBCcsBTssBVAIBCA==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="850,60" />
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,102">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="242,117">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="509,265" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="531,389">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="242,102">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="798,537" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_11" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_12" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Sequence_17" sap:VirtualizedContainerService.HintSize="336,338">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_13" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="CloseWindow_15" sap:VirtualizedContainerService.HintSize="314,106" />
+      <sap2010:ViewStateData Id="Sequence_18" sap:VirtualizedContainerService.HintSize="336,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Catch`1_5" sap:VirtualizedContainerService.HintSize="404,21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_14" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="CloseWindow_16" sap:VirtualizedContainerService.HintSize="314,106" />
+      <sap2010:ViewStateData Id="Delay_7" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="CloseWindow_17" sap:VirtualizedContainerService.HintSize="314,106" />
+      <sap2010:ViewStateData Id="Delay_8" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="CloseWindow_18" sap:VirtualizedContainerService.HintSize="314,106" />
+      <sap2010:ViewStateData Id="Delay_9" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="CloseWindow_19" sap:VirtualizedContainerService.HintSize="314,106" />
+      <sap2010:ViewStateData Id="Sequence_19" sap:VirtualizedContainerService.HintSize="336,981">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Catch`1_6" sap:VirtualizedContainerService.HintSize="404,21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_3" sap:VirtualizedContainerService.HintSize="418,587" />
+      <sap2010:ViewStateData Id="Sequence_20" sap:VirtualizedContainerService.HintSize="440,711">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="820,752">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEachRow_1" sap:VirtualizedContainerService.HintSize="850,980" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="872,1181">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="SuspendOperation_1" sap:VirtualizedContainerService.HintSize="912,1261" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>
